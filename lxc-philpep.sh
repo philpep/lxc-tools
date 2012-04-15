@@ -107,6 +107,13 @@ chroot $rootfs apt-get -y --force-yes install \
     rsyslog iputils-ping git iptables \
     file less host tcpdump zsh
 
+# install config
+chroot $rootfs bash -c "(cd /root; git clone git://git.philpep.org/config.git)"
+chroot $rootfs bash -c "(cd /root/config; yes | sh install.sh)"
+
+# change default shell
+chroot $rootfs chsh -s /usr/bin/zsh
+
 # TODO lxc can mount the fs when starting container
 echo "$rootdev $rootfs $FSTYPE defaults 0 0" >> /etc/fstab
 
