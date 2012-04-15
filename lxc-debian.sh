@@ -86,9 +86,6 @@ EOF
     chroot $rootfs /usr/sbin/update-rc.d -f hwclockfirst.sh remove
     chroot $rootfs /usr/sbin/update-rc.d -f hostname.sh remove
 
-    echo "root:root" | chroot $rootfs chpasswd
-    echo "Root password is 'root', please change !"
-
     return 0
 }
 
