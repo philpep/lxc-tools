@@ -6,7 +6,6 @@ TEMPLATE=$(dirname $0)/lxc-debian.sh
 # lvm
 VGNAME=rootvg
 FSTYPE=ext4
-FSSIZE=2G
 
 # network
 GATEWAY="192.168.42.1"
@@ -20,11 +19,11 @@ if [ ! -x "$TEMPLATE" ]; then
 fi
 
 usage() {
-    echo "$0 -h|--help -n|--name=<name> -i|--ip=<ip>"
+    echo "$0 -h|--help -n <name> -i <ip> -s <fssize (default 2G)>"
     exit 64
 }
 
-options=$(getopt hn:i: "$@")
+options=$(getopt hn:i:s: "$@")
 
 eval set -- "$options"
 
@@ -34,13 +33,14 @@ do
         -h) usage && exit 0;;
         -n) name=$2; shift 2;;
         -i) ip=$2; shift 2;;
+        -s) fssize=$2; shift 2;;
         *) break;;
     esac
 done
 
 test -z "$name" && usage
 test -z "$ip" && usage
-
+test -z "$fssize" && fssize=2G
 
 echo $ip
 
@@ -56,7 +56,7 @@ cleanup() {
 
 trap cleanup HUP INT TERM
 
-lvcreate -L $FSSIZE -n $name $VGNAME || exit 1
+lvcreate -L $fssize -n $name $VGNAME || exit 1
 udevadm settle
 mkfs -t $FSTYPE $rootdev || exit 1
 mkdir -p $rootfs
