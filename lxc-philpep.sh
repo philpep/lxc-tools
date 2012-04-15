@@ -42,8 +42,6 @@ test -z "$name" && usage
 test -z "$ip" && usage
 test -z "$fssize" && fssize=2G
 
-echo $ip
-
 mac=$MACBASE$(printf ':%02X' ${ip//./ }; echo)
 lxc_path=/var/lib/lxc/$name
 rootdev=/dev/$VGNAME/$name
