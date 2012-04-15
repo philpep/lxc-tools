@@ -75,6 +75,7 @@ $hostname
 EOF
 
     # reconfigure some services
+    echo "en_US.UTF-8 UTF-8" > $rootfs/etc/locale.gen
     chroot $rootfs locale-gen en_US.UTF-8 UTF-8
     chroot $rootfs update-locale LANG=en_US.UTF-8
 
