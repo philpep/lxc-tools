@@ -121,6 +121,8 @@ iptables,\
 file,\
 bash-completion,\
 less,\
+host,\
+tcpdump,\
 zsh
 
     cache=$1
