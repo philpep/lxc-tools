@@ -85,11 +85,13 @@ cat <<EOF > $rootfs/etc/network/interfaces
 auto lo
 iface lo inet loopback
 EOF
+# TODO lxc.network.ipv4.gateway and drop net_admin capabilitie
 cat << EOF > $rootfs/etc/rc.local
 #!/bin/sh
 ip route add default via $GATEWAY dev eth0
 EOF
 
+# TODO lxc can mount the fs when starting container
 echo "$rootdev $rootfs $FSTYPE defaults 0 0" >> /etc/fstab
 
 echo "$name" created
