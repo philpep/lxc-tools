@@ -100,6 +100,13 @@ ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAuV9mpjaE2wAA+MqrkxNrSM93Lfw2n/wTHICi6YQpVv9A
 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA44/kafwOzHQDN8hsVqxsdoo24z9aGTsBWdiqPj8cDlIC49DusBowZEcd+f2GVy8Op0KSy7ETEvazTfwWHi4KgcHmZRJplUoO5jfZ1BwbCQTrABkOAdX/5PYRepG9dQam4DnHKs7EDb1Fz/ggs6aZCamFvFu6P3hJ74/BsT0Pew2phevRRSieJQM0ORSgATCeNi62uYXnham/A3eODv/h5D/vDsZDJIcs5QzhWZYUY4iIIk63wimOje5pZX4MaGdvyRZfPPXCKnn29Y+ZdNJQbhYga5FFooqURX6CXrr6CQjOpZpeG/0YJWupNd6QX/CIC0MEuVpI/gjhHoZvzVnoUQ==
 EOF
 
+# install extra packages
+chroot $rootfs apt-get -y --force-yes install \
+    vim-nox wget tmux locate \
+    apt-utils man-db openssh-client \
+    rsyslog iputils-ping git iptables \
+    file less host tcpdump zsh
+
 # TODO lxc can mount the fs when starting container
 echo "$rootdev $rootfs $FSTYPE defaults 0 0" >> /etc/fstab
 
