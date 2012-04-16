@@ -30,7 +30,7 @@ configure_debian()
 
     # squeeze only has /dev/tty and /dev/tty0 by default,
     # therefore creating missing device nodes for tty1-4.
-    for tty in $(seq 1 4); do
+    for tty in $(seq 1 1); do
     if [ ! -e $rootfs/dev/tty$tty ]; then
         mknod $rootfs/dev/tty$tty c 4 $tty
     fi
@@ -51,9 +51,6 @@ l6:6:wait:/etc/init.d/rc 6
 z6:6:respawn:/sbin/sulogin
 1:2345:respawn:/sbin/getty 38400 console
 c1:12345:respawn:/sbin/getty 38400 tty1 linux
-c2:12345:respawn:/sbin/getty 38400 tty2 linux
-c3:12345:respawn:/sbin/getty 38400 tty3 linux
-c4:12345:respawn:/sbin/getty 38400 tty4 linux
 EOF
 
     # disable selinux in debian
@@ -184,7 +181,7 @@ copy_configuration()
     hostname=$3
 
     cat <<EOF >> $path/config
-lxc.tty = 4
+lxc.tty = 1
 lxc.pts = 1024
 lxc.rootfs = $rootfs
 lxc.utsname = $hostname
