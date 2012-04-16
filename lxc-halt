@@ -1,0 +1,54 @@
+#!/bin/sh
+
+set -e
+
+_OPTIONS="$(getopt -o n: -l name: -- "${@}")"
+
+if [ "${?}" -ne 0 ]
+then
+	echo "Usage: $(basename ${0}) -n|--name CONTAINER" >&2
+	exit 1
+fi
+
+eval set -- "${_OPTIONS}"
+
+while true
+do
+	case "${1}" in
+		-n|--name)
+			_CONTAINER="${2}"
+			shift 2
+			;;
+
+		--)
+			shift
+			break
+			;;
+
+		*)
+			echo "E: $(basename ${0}): internal error ${0}" >&2
+			exit 1
+			;;
+	esac
+done
+
+if [ -z "${_CONTAINER}" ]
+then
+	echo "E: $(basename ${0}): missing container name, use --name option" >&2
+	exit 1
+fi
+
+if lxc-info -n ${_CONTAINER} 2>&1 | grep -qs "STOPPED"
+then
+	echo "P: ${_CONTAINER} - already stopped"
+	exit 0
+fi
+
+# FIXME: Assumption of /var/lib/lxc
+if [ -e /var/lib/lxc/${_CONTAINER}/rootfs ]
+then
+	chroot /var/lib/lxc/${_CONTAINER}/rootfs telinit 0
+else
+	echo "E: /var/lib/lxc/${_CONTAINER}/rootfs - no such directory"
+	exit 1
+fi
