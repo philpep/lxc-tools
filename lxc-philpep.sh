@@ -110,7 +110,7 @@ chroot $rootfs apt-get -y --force-yes install \
     vim-nox wget tmux locate \
     apt-utils man-db openssh-client \
     rsyslog iputils-ping git iptables \
-    file less host tcpdump zsh
+    file less host tcpdump zsh exuberant-ctags
 
 # install config
 chroot $rootfs bash -c "(cd /root; git clone git://git.philpep.org/config.git)"
