@@ -101,6 +101,11 @@ ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA44/kafwOzHQDN8hsVqxsdoo24z9aGTsBWdiqPj8cDlIC
 EOF
 
 # install extra packages
+cat > $rootfs/etc/apt/apt.conf << EOF
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOF
+
 chroot $rootfs apt-get -y --force-yes install \
     vim-nox wget tmux locate \
     apt-utils man-db openssh-client \
