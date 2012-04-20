@@ -112,6 +112,9 @@ chroot $rootfs apt-get -y --force-yes install \
     rsyslog iputils-ping git iptables \
     file less host tcpdump zsh exuberant-ctags
 
+#http://www.mail-archive.com/lxc-users@lists.sourceforge.net/msg01266.html
+sed -i 's/$ModLoad imklog/#$ModLoad imklog/' $rootfs/etc/rsyslog.conf
+
 # install config
 chroot $rootfs bash -c "(cd /root; git clone git://git.philpep.org/config.git)"
 chroot $rootfs bash -c "(cd /root/config; yes | sh install.sh)"
