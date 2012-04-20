@@ -47,7 +47,7 @@ fi
 # FIXME: Assumption of /var/lib/lxc
 if [ -e /var/lib/lxc/${_CONTAINER}/rootfs ]
 then
-	chroot /var/lib/lxc/${_CONTAINER}/rootfs telinit 0
+	chroot /var/lib/lxc/${_CONTAINER}/rootfs shutdown -h now
 else
 	echo "E: /var/lib/lxc/${_CONTAINER}/rootfs - no such directory"
 	exit 1
