@@ -101,10 +101,19 @@ ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA44/kafwOzHQDN8hsVqxsdoo24z9aGTsBWdiqPj8cDlIC
 EOF
 
 # install extra packages
+cat > $rootfs/etc/apt/sources.list << EOF
+deb $MIRROR squeeze main contrib non-free
+deb http://security.debian.org/ squeeze/updates main contrib non-free
+deb http://backports.debian.org/debian-backports squeeze-backports main contrib non-free
+EOF
+
 cat > $rootfs/etc/apt/apt.conf << EOF
 APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
+
+chroot $rootfs apt-get update
+chroot $rootfs apt-get upgrade
 
 chroot $rootfs apt-get -y --force-yes install \
     vim-nox wget tmux locate \
