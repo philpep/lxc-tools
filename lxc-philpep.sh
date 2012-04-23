@@ -131,6 +131,10 @@ chroot $rootfs bash -c "(cd /root/config; yes | sh install.sh)"
 # change default shell
 chroot $rootfs chsh -s /usr/bin/zsh
 
+# Configure timezone
+echo "Europe/Paris" > $rootfs/etc/timezone
+chroot $rootfs dpkg-reconfigure -f noninteractive tzdata
+
 # TODO lxc can mount the fs when starting container
 echo "$rootdev $rootfs $FSTYPE defaults 0 0" >> /etc/fstab
 
