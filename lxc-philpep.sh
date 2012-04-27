@@ -74,19 +74,15 @@ lxc.network.link = $BRIDGE
 lxc.network.hwaddr = $mac
 lxc.network.ipv4 = $ip/$NETMASK
 lxc.network.veth.pair = lxc-$name
+lxc.network.ipv4.gateway = $GATEWAY
 
 # drop capabilities
-lxc.cap.drop = audit_control audit_write fsetid ipc_lock ipc_owner lease linux_immutable mac_admin mac_override mac_admin mknod setfcap setpcap sys_admin sys_boot sys_module sys_nice sys_pacct sys_ptrace sys_rawio sys_resource sys_time sys_tty_config
+lxc.cap.drop = audit_control audit_write fsetid ipc_lock ipc_owner lease linux_immutable mac_admin mac_override mac_admin mknod setfcap setpcap sys_admin sys_boot sys_module sys_nice sys_pacct sys_ptrace sys_rawio sys_resource sys_time sys_tty_config net_admin
 EOF
 
 cat <<EOF > $rootfs/etc/network/interfaces
 auto lo
 iface lo inet loopback
-EOF
-# TODO lxc.network.ipv4.gateway and drop net_admin capabilitie
-cat << EOF > $rootfs/etc/rc.local
-#!/bin/sh
-ip route add default via $GATEWAY dev eth0
 EOF
 
 # random password

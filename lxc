@@ -31,7 +31,7 @@ fi
 start_one() {
   name=$1
   if [ -f "/var/lib/lxc/$name/config" ]; then
-    lxc-start -n $name -d
+    lxc-start -n $name -f /var/lib/lxc/$name/config -d
   else
     log_failure_msg "Can't find config file /var/lib/lxc/$name/config"
   fi
