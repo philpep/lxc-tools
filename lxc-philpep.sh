@@ -121,7 +121,7 @@ chroot $rootfs apt-get -y --force-yes install \
 sed -i 's/$ModLoad imklog/#$ModLoad imklog/' $rootfs/etc/rsyslog.conf
 
 # install config
-chroot $rootfs bash -c "(cd /root; git clone git://git.philpep.org/config.git)"
+chroot $rootfs bash -c "(cd /root; git clone git://github.com/philpep/config)"
 chroot $rootfs bash -c "(cd /root/config; yes | sh install.sh)"
 
 # change default shell
