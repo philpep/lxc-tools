@@ -13,6 +13,8 @@ NETMASK="24"
 MACBASE="00:FF"
 BRIDGE="brlxc0"
 
+test -e /etc/default/lxc-philpep && . /etc/default/lxc-philpep
+
 if [ ! -x "$TEMPLATE" ]; then
     echo "$TEMPLATE doesn't exist or isn't executable"
     exit 1
