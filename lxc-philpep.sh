@@ -20,8 +20,10 @@ if [ ! -x "$TEMPLATE" ]; then
     exit 1
 fi
 
+arch=$(dpkg --print-architecture)
+
 usage() {
-    echo "$0 -h|--help -n <name> -i <ip> -s <fssize (default 2G)>"
+	echo "$0 -h|--help -n <name> -i <ip> -s <fssize (default 2G)> -a <arch (default $arch)>"
     exit 64
 }
 
@@ -36,6 +38,7 @@ do
         -n) name=$2; shift 2;;
         -i) ip=$2; shift 2;;
         -s) fssize=$2; shift 2;;
+        -a) arch=$2; shift 2;;
         *) break;;
     esac
 done

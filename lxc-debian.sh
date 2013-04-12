@@ -142,6 +142,7 @@ install_debian()
 {
     cache="/var/cache/lxc/debian"
     rootfs=$1
+    arch=$2
     mkdir -p /var/lock/subsys/
     (
     flock -n -x 200
@@ -150,7 +151,6 @@ install_debian()
         return 1
     fi
 
-    arch=$(dpkg --print-architecture)
 
     echo "Checking cache download in $cache/rootfs-$SUITE-$arch ... "
     if [ ! -e "$cache/rootfs-$SUITE-$arch" ]; then
@@ -179,12 +179,14 @@ copy_configuration()
     path=$1
     rootfs=$2
     hostname=$3
+    arch=$4
 
     cat <<EOF >> $path/config
 lxc.tty = 1
 lxc.pts = 1024
 lxc.rootfs = $rootfs
 lxc.utsname = $hostname
+lxc.arch = $arch
 lxc.cgroup.devices.deny = a
 # /dev/null and zero
 lxc.cgroup.devices.allow = c 1:3 rwm
@@ -242,7 +244,7 @@ clean()
 usage()
 {
     cat <<EOF
-$1 -h|--help -p|--path=<path> -n|--name=<name> --clean
+$1 -h|--help -p|--path=<path> -n|--name=<name> -a|--arch=<arch> --clean
 EOF
     return 0
 }
@@ -260,6 +262,7 @@ do
         -h|--help)      usage $0 && exit 0;;
         -p|--path)      path=$2; shift 2;;
         -n|--name)      name=$2; shift 2;;
+        -a|--arch)      arch=$2; shift 2;;
         -c|--clean)     clean=$2; shift 2;;
         --)             shift 1; break ;;
         *)              break ;;
@@ -274,6 +277,8 @@ if [ ! -z "$clean" -a -z "$path" ]; then
     clean || exit 1
     exit 0
 fi
+
+test -z "$arch" && arch=$(dpkg --print-architecture)
 
 type debootstrap
 if [ $? -ne 0 ]; then
@@ -293,7 +298,7 @@ fi
 
 rootfs=$path/rootfs
 
-install_debian $rootfs
+install_debian $rootfs $arch
 if [ $? -ne 0 ]; then
     echo "failed to install debian"
     exit 1
@@ -305,7 +310,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-copy_configuration $path $rootfs $name
+copy_configuration $path $rootfs $name $arch
 if [ $? -ne 0 ]; then
     echo "failed write configuration file"
     exit 1
