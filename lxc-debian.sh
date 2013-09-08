@@ -20,7 +20,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-SUITE=${SUITE:-squeeze}
+SUITE=${SUITE:-wheezy}
 MIRROR=${MIRROR:-"http://cdn.debian.net/debian"}
 
 configure_debian()
@@ -28,7 +28,7 @@ configure_debian()
     rootfs=$1
     hostname=$2
 
-    # squeeze only has /dev/tty and /dev/tty0 by default,
+    # wheezy only has /dev/tty and /dev/tty0 by default,
     # therefore creating missing device nodes for tty1-4.
     for tty in $(seq 1 1); do
     if [ ! -e $rootfs/dev/tty$tty ]; then
@@ -93,11 +93,14 @@ ifupdown,\
 locales,\
 libui-dialog-perl,\
 dialog,\
-dhcp3-client,\
+isc-dhcp-client,\
 netbase,\
 net-tools,\
 iproute,\
-openssh-server
+openssh-server,\
+user-setup,\
+python-apt,\
+lsb-release
 
     cache=$1
     arch=$2
